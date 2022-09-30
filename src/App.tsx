@@ -1,13 +1,15 @@
 import React from "react";
 import { Product } from "./components/Product";
-import {products} from './data/products'
+import { products } from "./data/products";
 
 function App() {
-  return <div className="container mx-auto max-w-2xl pt-5">
-    <Product product={products[0]} />
-    <Product product={products[1]} />
-
-    </div>;
+  return (
+    <div className="container mx-auto max-w-2xl pt-5">
+      {products.map((product) => (
+        <Product product={product} key={product.id} />
+      ))}
+    </div>
+  );
 }
 
 export default App;
