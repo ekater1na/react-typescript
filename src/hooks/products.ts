@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { IProduct } from "../models";
 
-export function useProducts() {
+export function useProducts(value: number) {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -11,12 +11,12 @@ export function useProducts() {
     setProducts(prev => [...prev, product])
   }
 
-  async function fetchProducts() {
+  async function fetchProducts(value: number) {
     try {
       setError("");
       setLoading(true);
       const response = await axios.get<IProduct[]>(
-        "https://fakestoreapi.com/products?limit=5"
+        `https://fakestoreapi.com/products?limit=${value}`
       );
       console.log(response);
       setProducts(response.data);
@@ -29,7 +29,7 @@ export function useProducts() {
   }
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(value);
   }, []);
 
   return { products, error, loading, addProduct };

@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { CreateProduct } from "./components/CreateProduct";
 import { ErrorMessage } from "./components/Error";
 import { Loader } from "./components/Loader";
 import { Modal } from "./components/Modal";
 import { Product } from "./components/Product";
+import { ModalContext } from "./context/ModalContext";
 import { useProducts } from "./hooks/products";
 import { IProduct } from "./models";
 
 function App() {
-  const { products, error, loading, addProduct } = useProducts();
-  const [modal, setModal] = useState(false);
+  const { products, error, loading, addProduct } = useProducts(3);
+  // const [modal, setModal] = useState(false);
+  const { modal, openModal, closeModal } = useContext(ModalContext);
 
   const createHandler = (product: IProduct) => {
-    setModal(false);
+    closeModal();
     addProduct(product);
   };
 
@@ -25,7 +27,7 @@ function App() {
       ))}
 
       {modal && (
-        <Modal title="Create new product" onClose={() => setModal(false)}>
+        <Modal title="Create new product" onClose={closeModal}>
           <CreateProduct
             // onCreate={() => setModal(false)}
             onCreate={createHandler}
@@ -33,10 +35,12 @@ function App() {
         </Modal>
       )}
 
-      <button 
-      className="fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
-      onClick={()=>setModal(true)}
-      >+</button>
+      <button
+        className="fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
+        onClick={openModal}
+      >
+        +
+      </button>
     </div>
   );
 }
